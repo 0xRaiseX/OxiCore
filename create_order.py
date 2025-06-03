@@ -61,8 +61,6 @@ def send_order(orders):
     end_time = time.time() - start
     end_time = float("{:.4f}".format(end_time))
     print(f'Время выполнения: {end_time}mc   Шаг ордера: {orders_c}   Время работы: {time_start()}')
-    
-
 
 def load_lot_size():
     res = requests.get('https://api.binance.com/api/v3/exchangeInfo')
@@ -101,8 +99,6 @@ def create_order(symbol, price, quantity, side):
     step_size = load_lot_size()
     step = step_size[symbol]
    
-    # quantity = round_to_step(float(quantity), float(step))
-
     timestamp = int(time.time() * 1000)
     payload = {
         'symbol': symbol,
@@ -132,14 +128,11 @@ def create_order(symbol, price, quantity, side):
         print("Статус код:", order.status_code)
         print("Ответ сервера:", order.text)
 
-
 binance = ccxt.binance({
     'enbaleRateLimit': False,
-    'api_key': 'lWTBXXMNTUcKXaqekyoq4kswEtfur0gdUVOPE4WYeiFuK1dBfIT21TG7KMNxVsXL',
-    'secret': 'odIZONzwZzCy2656eBkoxPV42jm1TxJfpOmIiiCDd1msHPl8Sdt7PgsC2h37BmJJ'
+    'api_key': '',
+    'secret': ''
 })
-
-
 
 def create_binance_market_order(symbol, amount, side):
     start = time.time()
@@ -173,8 +166,6 @@ def create_binance_FOKorder_FOK(symbol, price, amount, side):
     order = binance.create_order(symbol, type, side, amount, price, {'timeInForce': 'FOK'})
     end = time.time() - start1
     print('Время ордера: ', end)
-    # return order['info']['orderId']
-  
 
     if order['info']['status'] == 'FILLED':
         if side == 'buy':
@@ -183,10 +174,6 @@ def create_binance_FOKorder_FOK(symbol, price, amount, side):
             return order['info']['cummulativeQuoteQty']
     else:
         return 'CANCEL'
-    
-
-
-
 
 def start_load(data):
     while True:
@@ -208,7 +195,6 @@ def start_load(data):
                 break
             else:
                 break
-
 
 def create_binance_FOKorder_trail(symbol, price, amount, side):
     print('Данные получены: ',symbol, price, amount, side)
